@@ -23,6 +23,26 @@ router.get('/getVoucherDetails',function (req,res) {
     })
 });
 
+// router.post('/getPoints',function (req,res) {
+//     //console.log("*************In Server side *****************")
+//     console.log(req.body.id);
+    
+//     Order.find({ "userid": req.body.id})
+//         .exec(function(err, result) {
+//         if (err) throw err;
+
+//         var totalPoints = 0;
+//         for(var i=0;i<result.length;i++){
+//             console.log(result[i].points);
+//             if(typeof result[i].points != 'undefined'){
+//                 totalPoints += Number(result[i].points);
+//             }
+//         }
+//        res.send({'totalPoints' : totalPoints});
+//     });
+
+// });
+
 
 router.get('/getTransactionDetails/:userid',function (req,res) {
     var user = req.params.userid;
@@ -61,14 +81,6 @@ router.post('/userSignup',function (req,res) {
 
 
 
-router.get('/getData/',function (req,res,next) {
-
-        Customer.find(function(err, result) {
-            if (err) throw err;
-            console.log(result);
-            res.json(result);
-        })
-});
 
 router.post('/login',function (req,res,next) {
             var uname = req.body.userName;
@@ -86,7 +98,6 @@ router.post('/login',function (req,res,next) {
     });
 
 router.post('/redeemCoupon', function(req, res) {
-// console.log(req.body);
 
     var orderData = new Order({
         userid: req.body.userid,
@@ -95,6 +106,23 @@ router.post('/redeemCoupon', function(req, res) {
         points: req.body.points,
         value : req.body.value
      });
+
+     Customer.find({"_id": orderData.userid},function(err,doc) {
+        if (err) { throw err; }
+        else { 
+            console.log("Document is..", doc[0]);
+            console.log("Document is..", doc[0].totalPoints);
+            var points = doc[0].totalPoints;
+            var remainingPoints = points - orderData.points;
+            console.log("Remaining Points are",remainingPoints);
+
+            Customer.findOneAndUpdate({"_id": orderData.userid}, {$set: {"totalPoints": remainingPoints}}, function(err,doc) {
+                if (err) { throw err; }
+                else { console.log("Document Updated"); }
+              });  
+
+        }
+      }); 
 
     console.log("Coupon Redeemed");
     orderData.save(function (err,result) {
@@ -106,20 +134,11 @@ router.post('/redeemCoupon', function(req, res) {
            res.json({msg: 'Order details saved successfully'});
            console.log(result);
        }
+
     });
 });
 
-router.get('/deleteData/:id', function(req, res) {
 
-    Customer.remove({_id: req.params.id}, function (err,result) {
-        if(err){
-            res.json(err);
-        }
-        else{
-            res.json(result);
-        }
-    });
-});
 
 
 router.post('/addItem',function (req,res) {

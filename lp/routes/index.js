@@ -14,6 +14,7 @@ var Order = require('../models/order');
 router.get('/',function (req,res) {
     res.render('index');
 });
+
 router.get('/getVoucherDetails',function (req,res) {
     console.log("*************In Server side *****************")
     Items.find(function(err, result) {
@@ -84,13 +85,27 @@ router.post('/login',function (req,res,next) {
             })
     });
 
-router.post('/updatedata', function(req, res) {
+router.post('/redeemCoupon', function(req, res) {
+// console.log(req.body);
 
-    var url = 'mongodb://localhost:27017/cmpe280';
-    MongoClient.connect(url, function(err, db) {
-        assert.equal(null, err);
-        console.log("Connected to MongoDb server.");
-        db.close();
+    var orderData = new Order({
+        userid: req.body.userid,
+        items: req.body.voucherName,
+        orderDate: req.body.date,
+        points: req.body.points,
+        value : req.body.value
+     });
+
+    console.log("Coupon Redeemed");
+    orderData.save(function (err,result) {
+       if(err){
+           res.json({msg: 'Failed to add Order details'});
+           console.log(err);
+       }
+       else{
+           res.json({msg: 'Order details saved successfully'});
+           console.log(result);
+       }
     });
 });
 

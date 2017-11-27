@@ -1,4 +1,4 @@
-<div class="col-md-6 col-md-offset-3" style="margin: 0 auto; margin-top:100px;background-color:light-blue;" ng-controller="dashboard" ng-onload="getVoucherDetails()">
+<div ng-init="getVoucherDetails()" class="col-md-6 col-md-offset-3" style="margin: 0 auto; margin-top:100px;background-color:light-blue;" ng-controller="dashboard">
     <h1 style="margin-top:100px;"> Welcome {{firstName}}</h1>
     <div class=row>
     <div ng-repeat="voucher in vouchers" class="col-sm-1 col-md-4">
@@ -11,18 +11,14 @@
                 <br>
                 <label>{{voucher.voucherCode}}</label>
                 <div class="clearfix">
-                <a href="#" class="btn btn-success pull-right" role="button">Redeem Now</a>
+                <a href="#" ng-click="redeemCoupon(voucher)" class="btn btn-success pull-right" role="button">Redeem Now</a>
                 </div>           
             </div>
             <br>
     </div>
     </div>
-    <div class="form-actions">
-        <button ng-click="getVoucherDetails()" class="btn btn-primary">Get Voucher Data</button>
-    </div>
+    
     <br>
 
-    <div class="form-actions">
-        <button ng-click="getTransactionDetails()" class="btn btn-primary">Get Transaction History</button>
-    </div>
+
 </div>

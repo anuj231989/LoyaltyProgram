@@ -18,18 +18,18 @@ app.service('userDetails', function() {
   
   });
 
-app.service('voucherDetails', function() {
+// app.service('voucherDetails', function() {
 
-    return {
-        setVoucherName: function(voucherName) {
-            this.voucherName = voucherName;
-        },
-        getVoucherName: function(){
-            return this.voucherName;
-        }
-    };
+//     return {
+//         setVoucherName: function(voucherName) {
+//             this.voucherName = voucherName;
+//         },
+//         getVoucherName: function(){
+//             return this.voucherName;
+//         }
+//     };
 
-});
+// });
 app.config(function($routeProvider) {
     $routeProvider
     .when("/", {
@@ -50,6 +50,36 @@ app.config(function($routeProvider) {
     .when("/getTransactionDetails", {
         templateUrl : "transactionhistory.html"
     });
+
+});
+
+app.controller('root', function($scope, $http, userDetails, $location){
+    $scope.user = {};
+    $scope.user.loggedIn = false;
+
+    $scope.getTransactionDetails = function () {
+        console.log("*************In transaction method client side *****************")
+        var userid = userDetails.getId();
+        console.log("User Id client side is ",userid);
+        var url="/getTransactionDetails/"+userid;
+        console.log("url is",url);
+        $scope.orders = [];
+
+        $http.get(url)
+            .then(
+                function(response){
+                    console.log("Response in client side", response.data.orders);
+                    $scope.orders = response.data.orders;
+
+
+                    $location.path("/getTransactionDetails");
+                    //console.log("Response in $scope.orders ", $scope.orders[0] );
+                    //$scope.vouchers.push(response.data);
+                }),
+            function(response){
+                console.log("Dashboard loading failed");
+            }
+    }
 
 });
 
@@ -77,58 +107,33 @@ app.controller('dashboard', function($scope, $http, userDetails, $location){
             }
     }
 
-    $scope.getTransactionDetails = function () {
-        console.log("*************In transaction method client side *****************")
-        var userid = userDetails.getId();
-        console.log("User Id client side is ",userid);
-        var url="/getTransactionDetails/"+userid;
-        console.log("url is",url);
-        $scope.orders = [];
 
-        $http.get(url)
-            .then(
-                function(response){
-                    console.log("Response in client side", response.data.orders);
-                    $scope.orders = response.data.orders;
-                    $location.path("/getTransactionDetails");
-                    //console.log("Response in $scope.orders ", $scope.orders[0] );
-                    //$scope.vouchers.push(response.data);
-                }),
+    $scope.redeemCoupon = function (coupon) {
+        console.log(coupon);
+        var date = new Date();
+        console.log("Date is",date);
+        
+        coupon.date = new Date();
+        coupon.userid = userDetails.getId();
+        var url="/redeemCoupon"
+      
+        $http.post(url,coupon )
+        .then(
             function(response){
-                console.log("Dashboard loading failed");
+                console.log("Data Saved");
+
+            }), 
+            function(response){
+                console.log("Could not save data");
             }
+
     }
+
+   
 });
 
-/*app.controller('transaction', function($scope, $http, userDetails){
-    console.log("get first name");
-    console.log(userDetails.getFirstName());
-    $scope.firstName = userDetails.getFirstName();
-
-    $scope.getTransactionDetails = function () {
-        console.log("*************In client side *****************")
-        var url="/getTransactionDetails/"
-        $scope.vouchers = [];
-
-        $http.get(url)
-            .then(
-                function(response){
-                    console.log("Response in client side", response.data.vouchers);
-                    $scope.vouchers = response.data.vouchers;
-                    console.log("Response in $scope.vouchers ", $scope.vouchers[0] );
-                    //$scope.vouchers.push(response.data);
-
-                }),
-            function(response){
-                console.log("Dashboard loading failed");
-            }
-    }
-});*/
-
-
-
-
-
+app.controller('transactionHistory', function($scope, $http, userDetails) {
+});
 
 app.controller('signup', function($scope, $http, $location, userDetails) {
     $scope.firstName = "";
@@ -169,7 +174,8 @@ app.controller('signup', function($scope, $http, $location, userDetails) {
 		var data = {
 			"userName" : $scope.userName,
 			"password" : $scope.password
-		};
+        };
+        $scope.user.loggedIn = true;
         $http.post(url, data)
         .then(
             function(response){

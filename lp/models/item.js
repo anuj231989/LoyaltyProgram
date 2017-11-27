@@ -7,7 +7,7 @@ var Schema = mongoose.Schema;
 var ItemSchema = new Schema({
     voucherName: {type:String, required:true},
     points: {type:Number, required:true},
-	value: {type:String, required:true},
+	value: {type:Number, required:true},
 	voucherCode: {type:String, required:true}
 });
 

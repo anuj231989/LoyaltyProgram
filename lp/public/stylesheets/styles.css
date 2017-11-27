@@ -1,3 +1,7 @@
 .thumbnail {
     border: 2px solid #3872ac ;
 }
+
+.transaction:hover {
+    cursor: pointer;
+}

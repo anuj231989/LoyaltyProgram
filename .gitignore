@@ -1,3 +1,5 @@
 lp/node_modules
 lp/.idea
 lp/package-lock.json
+.idea/vcs.xml
+.idea/workspace.xml

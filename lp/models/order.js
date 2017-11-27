@@ -6,8 +6,9 @@ var Schema = mongoose.Schema;
 
 var OrderSchema = new Schema({
     userid: {type:Schema.Types.ObjectId, ref:'customer'},
-    items: {type:Object, required:true},
-	address: {type:String, required:true}
+    items: {type:Schema.Types.ObjectId, ref:'item', required:true},
+    orderDate: {type: String},
+    pointsRedeemed :{type: Number}
 });
 
 module.exports = mongoose.model('Order', OrderSchema);

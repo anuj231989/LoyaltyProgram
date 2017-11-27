@@ -18,17 +18,22 @@ router.get('/getVoucherDetails',function (req,res) {
     console.log("*************In Server side *****************")
     Items.find(function(err, result) {
         if (err) throw err;
-
-        // var voucherChunks = [];
-        // var chunkSize = 3;
-        // for(var i =0; i < result.length; i +=chunkSize){
-        //     voucherChunks = (result.slice(i,i + chunkSize));
-        // }
-        // //res.render('shop/index', {vouchers: voucherChunks });
-        // console.log("Result is ", result);
-        // console.log("voucherChunks is ", voucherChunks);
         res.send({vouchers: result });
     })
+});
+
+
+router.get('/getTransactionDetails/:userid',function (req,res) {
+    var user = req.params.userid;
+    console.log("searching for data");
+
+console.log ("User is",user);
+    Order.find({ "userid": user})
+        .exec(function(err, result) {
+        if (err) throw err;
+        console.log("Result is",result);
+        res.send({orders: result});
+    });
 });
 
 router.post('/userSignup',function (req,res) {

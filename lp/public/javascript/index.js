@@ -5,8 +5,14 @@ app.service('userDetails', function() {
         setFirstName: function(fname) {
             this.firstName = fname;
         },
+        setId : function (id){
+            this._id = id;
+        },
         getFirstName: function(){
             return this.firstName;
+        },
+        getId :function(){
+            return this._id;
         }
     };
   
@@ -40,11 +46,14 @@ app.config(function($routeProvider) {
     })
     .when("/admin", {
         templateUrl : "admin.html"
+    })
+    .when("/getTransactionDetails", {
+        templateUrl : "transactionhistory.html"
     });
 
 });
 
-app.controller('dashboard', function($scope, $http, userDetails){
+app.controller('dashboard', function($scope, $http, userDetails, $location){
     console.log("get first name");
     console.log(userDetails.getFirstName());
     $scope.firstName = userDetails.getFirstName();
@@ -52,6 +61,53 @@ app.controller('dashboard', function($scope, $http, userDetails){
     $scope.getVoucherDetails = function () {
         console.log("*************In client side *****************")
         var url="/getVoucherDetails"
+        $scope.vouchers = [];
+
+        $http.get(url)
+            .then(
+                function(response){
+                    console.log("Response in client side", response.data.vouchers);
+                    $scope.vouchers = response.data.vouchers;
+                    //console.log("Response in $scope.vouchers ", $scope.vouchers[0] );
+                    //$scope.vouchers.push(response.data);
+
+                }),
+            function(response){
+                console.log("Dashboard loading failed");
+            }
+    }
+
+    $scope.getTransactionDetails = function () {
+        console.log("*************In transaction method client side *****************")
+        var userid = userDetails.getId();
+        console.log("User Id client side is ",userid);
+        var url="/getTransactionDetails/"+userid;
+        console.log("url is",url);
+        $scope.orders = [];
+
+        $http.get(url)
+            .then(
+                function(response){
+                    console.log("Response in client side", response.data.orders);
+                    $scope.orders = response.data.orders;
+                    $location.path("/getTransactionDetails");
+                    //console.log("Response in $scope.orders ", $scope.orders[0] );
+                    //$scope.vouchers.push(response.data);
+                }),
+            function(response){
+                console.log("Dashboard loading failed");
+            }
+    }
+});
+
+/*app.controller('transaction', function($scope, $http, userDetails){
+    console.log("get first name");
+    console.log(userDetails.getFirstName());
+    $scope.firstName = userDetails.getFirstName();
+
+    $scope.getTransactionDetails = function () {
+        console.log("*************In client side *****************")
+        var url="/getTransactionDetails/"
         $scope.vouchers = [];
 
         $http.get(url)
@@ -67,7 +123,12 @@ app.controller('dashboard', function($scope, $http, userDetails){
                 console.log("Dashboard loading failed");
             }
     }
-});
+});*/
+
+
+
+
+
 
 app.controller('signup', function($scope, $http, $location, userDetails) {
     $scope.firstName = "";
@@ -115,6 +176,7 @@ app.controller('signup', function($scope, $http, $location, userDetails) {
                 console.log("logged in");
                 //$scope.data = response.data;
                 userDetails.setFirstName(response.data.fname);
+                userDetails.setId(response.data._id);
                 $location.path("/dashboard");
             }), 
             function(response){

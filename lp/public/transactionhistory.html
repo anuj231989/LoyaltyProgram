@@ -1,8 +1,10 @@
-<div class="col-md-6 col-md-offset-3" style="margin: 0 auto; margin-top:100px;" ng-controller="transactionHistory">
+<div class="col-md-6 col-md-offset-3" style="margin: 0 auto; margin-top:300px;" ng-controller="transactionHistory">
     <div class=row>
         <div ng-repeat="order in orders" class="col-sm-1 col-md-4">
             <div class="thumbnail">
                 <label>{{order.orderDate}}</label>
+                <br>
+                <label>{{order.items}}</label>
                 <br>
                 <label>{{order.pointsRedeemed}}</label>
             </div>                      

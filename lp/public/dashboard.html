@@ -4,13 +4,17 @@
     <div ng-repeat="voucher in vouchers" class="col-sm-1 col-md-4">
             <div class="thumbnail">
                 <label>{{voucher.voucherName}}</label>
+                <br>
                 <label>Points: {{voucher.points}}</label>
+                <br>
                 <label>Value: ${{voucher.value}}</label>
+                <br>
                 <label>{{voucher.voucherCode}}</label>
                 <div class="clearfix">
                 <a href="#" class="btn btn-success pull-right" role="button">Redeem Now</a>
                 </div>           
             </div>
+            <br>
     </div>
     </div>
 

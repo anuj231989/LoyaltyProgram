@@ -16,7 +16,7 @@ router.get('/',function (req,res) {
 });
 
 router.get('/getVoucherDetails',function (req,res) {
-    console.log("*************In Server side *****************")
+    //console.log("*************In Server side *****************")
     Items.find(function(err, result) {
         if (err) throw err;
         res.send({vouchers: result });
@@ -105,7 +105,7 @@ router.post('/redeemCoupon', function(req, res) {
         orderDate: req.body.date,
         points: req.body.points,
         value : req.body.value
-     });
+    });
 
      Customer.find({"_id": orderData.userid},function(err,doc) {
         if (err) { throw err; }
@@ -119,8 +119,7 @@ router.post('/redeemCoupon', function(req, res) {
             Customer.findOneAndUpdate({"_id": orderData.userid}, {$set: {"totalPoints": remainingPoints}}, function(err,doc) {
                 if (err) { throw err; }
                 else { console.log("Document Updated"); }
-              });  
-
+            });
         }
       }); 
 

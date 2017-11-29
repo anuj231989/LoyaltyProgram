@@ -8,15 +8,45 @@ app.service('userDetails', function() {
         setId : function (id){
             this._id = id;
         },
+        setTotalPoints : function (totalPoints) {
+            this.totalPoints = totalPoints
+
+        },
         getFirstName: function(){
             return this.firstName;
         },
         getId :function(){
             return this._id;
-        }
+        },
+        getTotalPoints :function(){
+            return this.totalPoints;
+        },
+
     };
   
   });
+
+//   app.service('pointsDetails', function($http,userDetails) {
+    
+//         return {
+//             getPoints :function(){
+//                 var url = '/getPoints';
+//                 var data = {'id' : userDetails.getId()};
+//                 console.log(data);
+//                 console.log("Id is", data);
+//                 $http.post(url, data)
+//                 .then(
+//                     function(response){
+//                         return response.data.totalPoints;
+    
+//                     }),
+//                     function(response){
+//                         console.log("points data failure");
+//                     }
+//             }
+//         };
+      
+//       });
 
 // app.service('voucherDetails', function() {
 
@@ -87,6 +117,11 @@ app.controller('dashboard', function($scope, $http, userDetails, $location){
     console.log("get first name");
     console.log(userDetails.getFirstName());
     $scope.firstName = userDetails.getFirstName();
+    $scope.totalPoints = userDetails.getTotalPoints();
+
+    // $scope.getPoints = function() {
+    //     $scope.totalPoints = pointsDetails.getPoints();
+    // }
 
     $scope.getVoucherDetails = function () {
         console.log("*************In client side *****************")
@@ -128,6 +163,8 @@ app.controller('dashboard', function($scope, $http, userDetails, $location){
             }
 
     }
+
+
 
    
 });
@@ -182,6 +219,7 @@ app.controller('signup', function($scope, $http, $location, userDetails) {
                 console.log("logged in");
                 //$scope.data = response.data;
                 userDetails.setFirstName(response.data.fname);
+                userDetails.setTotalPoints(response.data.totalPoints);
                 userDetails.setId(response.data._id);
                 $location.path("/dashboard");
             }), 
@@ -212,6 +250,10 @@ app.controller('admin', function($scope, $http, $location, userDetails) {
                            function(response){
                              // success callback
                              console.log("Data saved");
+                             $scope.voucherName = "";
+                             $scope.points = "";
+                             $scope.value = "";
+                             $scope.voucherCode = "";
                            }, 
                            function(response){
                              // failure callback

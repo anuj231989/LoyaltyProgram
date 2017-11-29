@@ -10,7 +10,8 @@ var CustomerSchema = new Schema({
 	username: {type:String, required:true},
 	password: {type:String, required:true},
 	email: {type:String, required:true},
-    phone: {type:String, required:true}
+    phone: {type:String, required:true},
+    totalPoints :{type:Number, default: 1000}
 });
 
 module.exports = mongoose.model('Customer', CustomerSchema);

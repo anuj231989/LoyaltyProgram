@@ -98,6 +98,9 @@ app.config(function($routeProvider) {
     })
     .when("/getTransactionDetails", {
         templateUrl : "transactionhistory.html"
+    })
+    .when("/referFriends", {
+        templateUrl : "referFriends.html"
     });
 
 });
@@ -119,6 +122,30 @@ app.controller('voucher', function($scope, $http){
             }
     }
 });
+
+app.controller('referFriends', function($scope, $http){
+    $scope.referFriends = function() {
+	var url = "/referFriends";
+	var data = {
+		name : $scope.name,
+		email : $scope.email
+	};
+        $http.post(url,data)
+        .then(
+            function(response){
+                console.log("Referral Mail Sent");
+                $scope.name = "";
+                $scope.email = "";
+            }), 
+            function(response){
+                console.log("Referral mail not sent");
+            }
+    }
+});
+
+
+
+
 app.controller('adminDashboard', function($scope, $http, $location, orderDetails){
 		console.log("admin dashboard controller");
 		var url = "getCustomerData";
@@ -186,6 +213,11 @@ app.controller('root', function($scope, $http, userDetails, $location){
             }
     }
 
+    $scope.referFriends = function(){
+        $location.path("/referFriends");
+
+    }
+
 });
 
 app.controller('dashboard', function($scope, $http, userDetails, $location){
@@ -214,6 +246,8 @@ app.controller('dashboard', function($scope, $http, userDetails, $location){
     }
 
 
+
+
     $scope.redeemCoupon = function (coupon) {
         console.log(coupon);
         var date = new Date();
@@ -233,6 +267,9 @@ app.controller('dashboard', function($scope, $http, userDetails, $location){
                 console.log("Could not save data");
             }
     }
+
+
+
 
 });
 

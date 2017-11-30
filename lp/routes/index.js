@@ -24,25 +24,51 @@ router.get('/getVoucherDetails',function (req,res) {
     })
 });
 
-// router.post('/getPoints',function (req,res) {
-//     //console.log("*************In Server side *****************")
-//     console.log(req.body.id);
-    
-//     Order.find({ "userid": req.body.id})
-//         .exec(function(err, result) {
-//         if (err) throw err;
 
-//         var totalPoints = 0;
-//         for(var i=0;i<result.length;i++){
-//             console.log(result[i].points);
-//             if(typeof result[i].points != 'undefined'){
-//                 totalPoints += Number(result[i].points);
-//             }
-//         }
-//        res.send({'totalPoints' : totalPoints});
-//     });
+router.post('/referFriends',function (req,res) {
 
-// });
+           console.log("Name is", req.body.name);
+           console.log("Email is", req.body.email);
+
+           if((req.body.email == "") || (req.body.name == "")) {
+               res.send("Email and Name should not blank");
+               return false;
+           }
+
+           var smtpTransport = nodemailer.createTransport({
+               service: 'Gmail',
+               host: "smtp.gmail.com", // hostname
+               secureConnection: true, // use SSL
+               port: 465, // port for secure SMTP
+               auth: {
+                   user: "loyaldigitalclub@gmail.com",
+                   pass: "1234loyaldigitalclub"
+               },
+               tls: {
+                   // do not fail on invalid certs
+                   rejectUnauthorized: false
+               }
+           });
+           var mailOptions = {
+               from: "Digital Loyalty Program Emailer ✔ <loyaldigitalclub@gmail.com>",// sender address
+               to: req.body.email, // list of receivers
+               subject: "Referral from Your Friend", // Subject line
+               html: "<b>Welcome <br><br>Your Friend has just invited you to join the Digital Loyalty Program ☺</b><br/>" // html body
+           }
+           smtpTransport.sendMail(mailOptions, function(error, response){
+               if(error){
+                   console.log("Error in email"+error);
+                   res.send("Email could not sent due to error: "+error);
+               }else{
+                   console.log(result);
+                   console.log("Mail sent successfully");
+                   res.send("Email has been sent successfully");
+               }
+           });
+
+});
+
+
 
 
 router.get('/getTransactionDetails/:userid',function (req,res) {
@@ -57,6 +83,9 @@ console.log ("User is",user);
         res.send({orders: result});
     });
 });
+
+
+
 
 
 router.post('/userSignup',function (req,res) {

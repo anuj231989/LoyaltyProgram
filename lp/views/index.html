@@ -42,9 +42,15 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive" style="color :black">
           <ul class="navbar-nav ml-auto">
+              <li class="nav-item" ng-if="user.loggedIn">
+                  <a class="nav-link js-scroll-trigger transaction" ng-click="goToDashboard()" >My Dashboard</a>
+                </li>
             <li class="nav-item" ng-if="user.loggedIn">
-              <a class="nav-link js-scroll-trigger transaction" ng-click="getTransactionDetails()" >Get Transaction History</a>
+              <a class="nav-link js-scroll-trigger transaction" ng-click="getTransactionDetails()" >My Transaction History</a>
             </li>
+            <li class="nav-item" ng-if="admin.loggedIn">
+                <a class="nav-link js-scroll-trigger transaction" ng-click="goToAdminDashboard()" >Admin Dashboard</a>
+              </li>
             <li class="nav-item" ng-if="admin.loggedIn">
               <a class="nav-link js-scroll-trigger transaction" href="#!/admin" >Add Voucher</a>
             </li>
@@ -54,16 +60,19 @@
             <li class="nav-item" ng-if="admin.loggedIn">
               <a class="nav-link js-scroll-trigger transaction" href="#!/voucher" >Add Points</a>
             </li>
+            <li class="nav-item" ng-if="admin.loggedIn">
+                <a class="nav-link js-scroll-trigger transaction" ng-click="analytics()" >Analytics</a>
+              </li>
             <li class="nav-item" ng-if="user.loggedIn">
               <a class="nav-link js-scroll-trigger transaction" ng-click="referFriends()">Refer Friends</a>
             </li>
-            <li class="nav-item" ng-if="!user.loggedIn">
+            <li class="nav-item" ng-if="!user.loggedIn && !admin.loggedIn">
               <a class="nav-link js-scroll-trigger" href="#services">Services</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" ng-if="!user.loggedIn && !admin.loggedIn">
               <a class="nav-link js-scroll-trigger" href="#portfolio">Portfolio</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" ng-if="!user.loggedIn && !admin.loggedIn">
               <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
             </li>
             <li class="nav-item" ng-if="user.loggedIn || admin.loggedIn">

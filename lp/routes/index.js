@@ -97,8 +97,8 @@ router.post('/userSignup',function (req,res) {
            var mailOptions = {
                from: "Digital Loyalty Program Emailer ✔ <suchishree.jena29@gmail.com>",// sender address
                to: req.body.email, // list of receivers
-               subject: "Signup Successfull ✔", // Subject line
-               html: "<b>Thank you for signing up for Digital Loyalty Program ☺</b><br/>Here are your details:<br/><br/><b>Username:</b>"+req.body.userName+" <br/><br/><b>Your Password:</b>"+req.body.password // html body
+               subject: "Signup Successful ✔", // Subject line
+               html: "<b>Thank you for signing up for Digital Loyalty Program ☺</b><br/>Here are your details:<br/><br/><b>Username:</b>"+req.body.userName+" <br/><br/><b>Password:</b>"+req.body.password // html body
            }
            smtpTransport.sendMail(mailOptions, function(error, response){
                if(error){

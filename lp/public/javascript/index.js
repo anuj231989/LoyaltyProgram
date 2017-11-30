@@ -69,6 +69,7 @@ app.config(function($routeProvider) {
     .when("/referFriends", {
         templateUrl : "referFriends.html"
     });
+    
 
 });
 
@@ -147,7 +148,11 @@ app.controller('adminDashboard', function($scope, $http, $location, orderDetails
                 function(response){
                     console.log("Dashboard loading failed");
                 }
-		}
+        }
+        
+
+
+
 });
 
 app.controller('root', function($scope, $http, userDetails, $location){
@@ -187,8 +192,26 @@ app.controller('root', function($scope, $http, userDetails, $location){
 
     $scope.signOut = function(){
         $location.path("/");
+        $scope.user.loggedIn = false;
+        $scope.admin.loggedIn = false;
 
     }
+
+    $scope.goToDashboard = function () {
+        $location.path("/dashboard");
+    }
+
+    $scope.goToAdminDashboard = function () {
+        $location.path("/adminLogin");
+    }
+
+    // Go to Analytics page... 
+
+    $scope.analytics = function () {
+       // $location.path("/adminLogin");
+    }
+
+
 
 });
 
@@ -239,9 +262,6 @@ app.controller('dashboard', function($scope, $http, userDetails, $location){
                 console.log("Could not save data");
             }
     }
-
-
-
 
 });
 

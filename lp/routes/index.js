@@ -58,9 +58,10 @@ router.post('/referFriends',function (req,res) {
            smtpTransport.sendMail(mailOptions, function(error, response){
                if(error){
                    console.log("Error in email"+error);
+                   res.statusCode = 401;
                    res.send("Email could not sent due to error: "+error);
                }else{
-                   console.log(result);
+                   console.log(response);
                    console.log("Mail sent successfully");
                    res.send("Email has been sent successfully");
                }

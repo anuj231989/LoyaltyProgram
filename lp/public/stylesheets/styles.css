@@ -1,5 +1,11 @@
 .thumbnail {
-    border: 2px solid #3872ac ;
+    padding-right : 5px;
+    padding-left : 5px;
+    padding-top : 5px;
+    padding-bottom : 5px;
+    border-radius: 15px;
+
+
 }
 
 .transaction:hover {

@@ -87,8 +87,8 @@ router.post('/userSignup',function (req,res) {
                secureConnection: true, // use SSL
                port: 465, // port for secure SMTP
                auth: {
-                   user: "suchishree.jena29@gmail.com",
-                   pass: "xsw2!QAZ"
+                   user: "loyaldigitalclub@gmail.com",
+                   pass: "1234loyaldigitalclub"
                },
                tls: {
                    // do not fail on invalid certs
@@ -96,7 +96,7 @@ router.post('/userSignup',function (req,res) {
                }
            });
            var mailOptions = {
-               from: "Digital Loyalty Program Emailer ✔ <suchishree.jena29@gmail.com>",// sender address
+               from: "Digital Loyalty Program Emailer ✔ <loyaldigitalclub@gmail.com>",// sender address
                to: req.body.email, // list of receivers
                subject: "Signup Successful ✔", // Subject line
                html: "<b>Thank you for signing up for Digital Loyalty Program ☺</b><br/>Here are your details:<br/><br/><b>Username:</b>"+req.body.userName+" <br/><br/><b>Password:</b>"+req.body.password // html body

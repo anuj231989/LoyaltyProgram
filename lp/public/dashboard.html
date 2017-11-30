@@ -2,16 +2,16 @@
     <h1 style="margin-top:100px;"> Welcome {{firstName}} you have {{totalPoints}} points</h1>
     <div class=row>
     <div ng-repeat="voucher in vouchers" class="col-sm-1 col-md-4">
-            <div class="thumbnail">
+            <div class="thumbnail" ng-init="voucher.redeemed = false;">
                 <label>{{voucher.voucherName}}</label>
                 <br>
                 <label>Points: {{voucher.points}}</label>
                 <br>
                 <label>Value: ${{voucher.value}}</label>
                 <br>
-                <label>{{voucher.voucherCode}}</label>
-                <div class="clearfix">
-                <a href="#" ng-click="redeemCoupon(voucher)" class="btn btn-success pull-right" role="button">Redeem Now</a>
+                <label ng-if="voucher.redeemed">{{voucher.voucherCode}}</label>
+                <div class="clearfix" ng-if="(!(voucher.redeemed)) && totalPoints >= voucher.points">
+                	<a ng-click="redeemCoupon(voucher)"  class="btn btn-success pull-right" role="button">Redeem Now</a>
                 </div>           
             </div>
             <br>

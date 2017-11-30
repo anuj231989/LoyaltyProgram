@@ -1,4 +1,14 @@
 var app = angular.module("loyalty", ["ngRoute"]);
+app.service('orderDetails', function() {
+	return {
+		getOrder: function(){
+			return this.order;
+		},
+		setOrder: function(order){
+			this.order = order;
+		}
+	};
+});
 app.service('userDetails', function() {
 
     return {
@@ -77,15 +87,80 @@ app.config(function($routeProvider) {
     .when("/admin", {
         templateUrl : "admin.html"
     })
+    .when("/adminLogin", {
+        templateUrl : "adminDashboard.html"
+    })
+    .when("/getOrderDetails", {
+        templateUrl : "orderDetails.html"
+    })
+    .when("/voucher", {
+        templateUrl : "voucher.html"
+    })
     .when("/getTransactionDetails", {
         templateUrl : "transactionhistory.html"
     });
 
 });
 
+app.controller('voucher', function($scope, $http){
+    $scope.addPoints = function() {
+	var url = "addPoints";
+	var Points = {
+		amount : $scope.amount,
+		email : $scope.email
+	};
+        $http.post(url,Points)
+        .then(
+            function(response){
+                console.log("Points Saved");
+            }), 
+            function(response){
+                console.log("Could not save Points");
+            }
+    }
+});
+app.controller('adminDashboard', function($scope, $http, $location, orderDetails){
+		console.log("admin dashboard controller");
+		var url = "getCustomerData";
+        $http.get(url)
+            .then(
+                function(response){
+                    console.log("Customer Data success");
+					$scope.customerData = response.data
+                },
+            function(response){
+                console.log("Customer Data failed");
+            }
+		);
+
+		$scope.showOrderDetails = function(customer){
+            console.log("*************In transaction method client side *****************")
+            var userid = customer._id;
+            console.log("User Id client side is ",userid);
+            var url="/getTransactionDetails/"+userid;
+            console.log("url is",url);
+            $scope.orders = [];
+    
+            $http.get(url)
+                .then(
+                    function(response){
+                        console.log("Response in client side", response.data.orders);
+   						orderDetails.setOrder(response.data.orders);
+                        $location.path("/getOrderDetails");
+                        //console.log("Response in $scope.orders ", $scope.orders[0] );
+                        //$scope.vouchers.push(response.data);
+                    }),
+                function(response){
+                    console.log("Dashboard loading failed");
+                }
+		}
+});
+
 app.controller('root', function($scope, $http, userDetails, $location){
     $scope.user = {};
+    $scope.admin = {};
     $scope.user.loggedIn = false;
+    $scope.admin.loggedIn = false;
 
     $scope.getTransactionDetails = function () {
         console.log("*************In transaction method client side *****************")
@@ -156,7 +231,7 @@ app.controller('dashboard', function($scope, $http, userDetails, $location){
         .then(
             function(response){
                 console.log("Data Saved");
-
+		coupon.redeemed = true;
             }), 
             function(response){
                 console.log("Could not save data");
@@ -169,7 +244,8 @@ app.controller('dashboard', function($scope, $http, userDetails, $location){
    
 });
 
-app.controller('transactionHistory', function($scope, $http, userDetails) {
+app.controller('orderDetails', function($scope, $http, userDetails, orderDetails) {
+   	$scope.orders = orderDetails.getOrder();
 });
 
 app.controller('signup', function($scope, $http, $location, userDetails) {
@@ -197,7 +273,7 @@ app.controller('signup', function($scope, $http, $location, userDetails) {
                        function(response){
                          // success callback
                            $location.path("/login");
-			console.log("saved");
+			   console.log("saved");
                        }, 
                        function(response){
                          // failure callback
@@ -207,25 +283,33 @@ app.controller('signup', function($scope, $http, $location, userDetails) {
 }
     
     $scope.login = function(){
-        var url="/login"
 		var data = {
 			"userName" : $scope.userName,
 			"password" : $scope.password
         };
-        $scope.user.loggedIn = true;
+		if(data.userName == "admin"){
+        		$scope.admin.loggedIn = true;
+            		$location.path("/adminLogin");
+		} else {
+        	var url="/login"
         $http.post(url, data)
         .then(
             function(response){
+        	$scope.user.loggedIn = true;
                 console.log("logged in");
                 //$scope.data = response.data;
                 userDetails.setFirstName(response.data.fname);
                 userDetails.setTotalPoints(response.data.totalPoints);
                 userDetails.setId(response.data._id);
                 $location.path("/dashboard");
-            }), 
-            function(response){
+            }, 
+            function(err){
+		console.log(err);
+		$scope.invalidLogin = true;
                 console.log("log in failure");
             }
+		)
+		}	
     }
 
 });

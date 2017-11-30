@@ -194,10 +194,6 @@ app.controller('dashboard', function($scope, $http, userDetails, $location){
     $scope.firstName = userDetails.getFirstName();
     $scope.totalPoints = userDetails.getTotalPoints();
 
-    // $scope.getPoints = function() {
-    //     $scope.totalPoints = pointsDetails.getPoints();
-    // }
-
     $scope.getVoucherDetails = function () {
         console.log("*************In client side *****************")
         var url="/getVoucherDetails"
@@ -236,12 +232,8 @@ app.controller('dashboard', function($scope, $http, userDetails, $location){
             function(response){
                 console.log("Could not save data");
             }
-
     }
 
-
-
-   
 });
 
 app.controller('orderDetails', function($scope, $http, userDetails, orderDetails) {

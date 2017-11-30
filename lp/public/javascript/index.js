@@ -36,40 +36,7 @@ app.service('userDetails', function() {
   
   });
 
-//   app.service('pointsDetails', function($http,userDetails) {
-    
-//         return {
-//             getPoints :function(){
-//                 var url = '/getPoints';
-//                 var data = {'id' : userDetails.getId()};
-//                 console.log(data);
-//                 console.log("Id is", data);
-//                 $http.post(url, data)
-//                 .then(
-//                     function(response){
-//                         return response.data.totalPoints;
-    
-//                     }),
-//                     function(response){
-//                         console.log("points data failure");
-//                     }
-//             }
-//         };
-      
-//       });
 
-// app.service('voucherDetails', function() {
-
-//     return {
-//         setVoucherName: function(voucherName) {
-//             this.voucherName = voucherName;
-//         },
-//         getVoucherName: function(){
-//             return this.voucherName;
-//         }
-//     };
-
-// });
 app.config(function($routeProvider) {
     $routeProvider
     .when("/", {
@@ -215,6 +182,11 @@ app.controller('root', function($scope, $http, userDetails, $location){
 
     $scope.referFriends = function(){
         $location.path("/referFriends");
+
+    }
+
+    $scope.signOut = function(){
+        $location.path("/");
 
     }
 

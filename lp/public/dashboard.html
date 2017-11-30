@@ -3,16 +3,16 @@
     <br><br>
     <div class=row>
     <div ng-repeat="voucher in vouchers" class="col-sm-1 col-md-4">
-            <div class="thumbnail" ng-init="voucher.redeemed = false;" style="background-color:#212529">
-                <label style="color:white">{{voucher.voucherName}}</label>
+            <div class="thumbnail" ng-init="voucher.redeemed = false;" style="background-color:#212529;text-align: center;">
+                <label style="color:white;font-size:25px;">{{voucher.voucherName}}</label>
                 <br>
-                <label style="color:white">Points: {{voucher.points}}</label>
+                <label style="color:white;;font-size:15px;">{{voucher.points}} Points</label>
                 <br>
-                <label style="color:white">Value: ${{voucher.value}}</label>
+                <label style="color:white;font-size:15px;"> Worth: ${{voucher.value}}</label>
                 <br>
-                <label style="color:white" ng-if="voucher.redeemed">{{voucher.voucherCode}}</label>
+                <label style="color:white;font-size:25px;" ng-if="voucher.redeemed">{{voucher.voucherCode}}</label>
                 <div class="clearfix" ng-if="(!(voucher.redeemed)) && totalPoints >= voucher.points">
-                	<a ng-click="redeemCoupon(voucher)"  class="btn btn-success pull-right" role="button">Redeem Now</a>
+                	<a ng-click="redeemCoupon(voucher)"  class="btn btn-success pull-center" role="button">Redeem Now</a>
                 </div>           
             </div>
             <br>

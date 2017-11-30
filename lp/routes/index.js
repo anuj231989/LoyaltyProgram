@@ -8,6 +8,7 @@ var assert = require('assert');
 var Customer = require('../models/customer');
 var Items = require('../models/item');
 var Order = require('../models/order');
+var nodemailer = require('nodemailer');
 
 
 /* GET home page. */
@@ -16,7 +17,7 @@ router.get('/',function (req,res) {
 });
 
 router.get('/getVoucherDetails',function (req,res) {
-    console.log("*************In Server side *****************")
+    //console.log("*************In Server side *****************")
     Items.find(function(err, result) {
         if (err) throw err;
         res.send({vouchers: result });
@@ -73,10 +74,47 @@ router.post('/userSignup',function (req,res) {
            console.log(err);
        }
        else{
-           res.json({msg: 'Customer details saved successfully'});
-           console.log(result);
+           //res.json({msg: 'Customer details saved successfully'});
+           if(req.body.emailId == "") {
+               res.send("Error: Email should not blank");
+               return false;
+           }
+
+           var smtpTransport = nodemailer.createTransport({
+               service: 'Gmail',
+               host: "smtp.gmail.com", // hostname
+               secureConnection: true, // use SSL
+               port: 465, // port for secure SMTP
+               auth: {
+                   user: "suchishree.jena29@gmail.com",
+                   pass: "xsw2!QAZ"
+               },
+               tls: {
+                   // do not fail on invalid certs
+                   rejectUnauthorized: false
+               }
+           });
+           var mailOptions = {
+               from: "Digital Loyalty Program Emailer ✔ <suchishree.jena29@gmail.com>",// sender address
+               to: req.body.email, // list of receivers
+               subject: "Signup Successfull ✔", // Subject line
+               html: "<b>Thank you for signing up for Digital Loyalty Program ☺</b><br/>Here are your details:<br/><br/><b>Username:</b>"+req.body.userName+" <br/><br/><b>Your Password:</b>"+req.body.password // html body
+           }
+           smtpTransport.sendMail(mailOptions, function(error, response){
+               if(error){
+                   console.log("Error in email"+error);
+                   res.send("Email could not sent due to error: "+error);
+               }else{
+                   console.log(result);
+                   console.log("Mail sent successfully");
+                   res.send("Email has been sent successfully");
+               }
+           });
+
        }
     });
+
+
 });
 
 
@@ -105,7 +143,7 @@ router.post('/redeemCoupon', function(req, res) {
         orderDate: req.body.date,
         points: req.body.points,
         value : req.body.value
-     });
+    });
 
      Customer.find({"_id": orderData.userid},function(err,doc) {
         if (err) { throw err; }
@@ -119,8 +157,7 @@ router.post('/redeemCoupon', function(req, res) {
             Customer.findOneAndUpdate({"_id": orderData.userid}, {$set: {"totalPoints": remainingPoints}}, function(err,doc) {
                 if (err) { throw err; }
                 else { console.log("Document Updated"); }
-              });  
-
+            });
         }
       }); 
 

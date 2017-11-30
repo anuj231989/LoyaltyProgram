@@ -117,7 +117,7 @@ router.post('/userSignup',function (req,res) {
                port: 465, // port for secure SMTP
                auth: {
                    user: "loyaldigitalclub@gmail.com",
-                   pass: "1234loyaldigitalclub"
+                   pass: "1234loyalDigitalClub"
                },
                tls: {
                    // do not fail on invalid certs

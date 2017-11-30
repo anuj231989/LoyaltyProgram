@@ -5,3 +5,7 @@
 .transaction:hover {
     cursor: pointer;
 }
+
+.ng-invalid.ng-valid-required {
+	background-color:pink;
+}

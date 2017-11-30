@@ -58,6 +58,7 @@ console.log ("User is",user);
     });
 });
 
+
 router.post('/userSignup',function (req,res) {
     var customerData = new Customer({
         fname: req.body.firstName,
@@ -118,6 +119,17 @@ router.post('/userSignup',function (req,res) {
 });
 
 
+router.get('/getCustomerData',function (req,res,next) {
+            Customer.find( function(err, result) {
+                if (err) throw err;
+                if(!result){
+                    res.statusCode = 401;
+                    res.send("Invalid Username or Password");
+                } else {
+                    res.json(result);
+                }
+            })
+    });
 
 
 router.post('/login',function (req,res,next) {
@@ -130,7 +142,6 @@ router.post('/login',function (req,res,next) {
                     res.send("Invalid Username or Password");
                 } else {
                     res.json(result);
-                    
                 }
             })
     });
@@ -173,6 +184,30 @@ router.post('/redeemCoupon', function(req, res) {
        }
 
     });
+});
+
+router.post('/addPoints', function(req, res) {
+
+    var Points = new Order({
+        email: req.body.email,
+        amount : req.body.amount
+    });
+
+     Customer.find({"email": Points.email},function(err,doc) {
+        if (err) { throw err; }
+        else { 
+            console.log("Document is..", doc[0]);
+            console.log("Document is..", doc[0].totalPoints);
+            var points = doc[0].totalPoints;
+            var remainingPoints = points + Points.amount;
+            console.log("Remaining Points are",remainingPoints);
+
+            Customer.findOneAndUpdate({"email": Points.email}, {$set: {"totalPoints": remainingPoints}}, function(err,doc) {
+                if (err) { throw err; }
+                else { console.log("Document Updated"); }
+            });
+        }
+      }); 
 });
 
 

@@ -45,8 +45,14 @@
             <li class="nav-item" ng-if="user.loggedIn">
               <a class="nav-link js-scroll-trigger transaction" ng-click="getTransactionDetails()" >Get Transaction History</a>
             </li>
-            <li class="nav-item" ng-if="!user.loggedIn">
+            <li class="nav-item" ng-if="admin.loggedIn">
+              <a class="nav-link js-scroll-trigger transaction" href="#!/admin" >Add Voucher</a>
+            </li>
+            <li class="nav-item" ng-if="!user.loggedIn && !admin.loggedIn">
               <a class="nav-link js-scroll-trigger" href="#about">About</a>
+            </li>
+            <li class="nav-item" ng-if="admin.loggedIn">
+              <a class="nav-link js-scroll-trigger transaction" href="#!/voucher" >Add Points</a>
             </li>
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="#services">Services</a>

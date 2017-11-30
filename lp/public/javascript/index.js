@@ -68,8 +68,10 @@ app.config(function($routeProvider) {
     })
     .when("/referFriends", {
         templateUrl : "referFriends.html"
-    });
-    
+    })
+        .when("/analyticsDetails", {
+            templateUrl : "analytics.html"
+        });
 
 });
 
@@ -91,7 +93,7 @@ app.controller('voucher', function($scope, $http){
     }
 });
 
-app.controller('referFriends', function($scope, $http){
+app.controller('referFriends', function($scope, $http, $location){
     $scope.referFriends = function() {
 	var url = "/referFriends";
 	var data = {
@@ -101,13 +103,20 @@ app.controller('referFriends', function($scope, $http){
         $http.post(url,data)
         .then(
             function(response){
+                $scope.validEmail = true;
+                alert("Email sent successfully!!");
                 console.log("Referral Mail Sent");
                 $scope.name = "";
                 $scope.email = "";
-            }), 
-            function(response){
+                $location.path("/dashboard");
+
+            },
+            function(err){
+                console.log(err);
+                $scope.invalidEmail = true;
                 console.log("Referral mail not sent");
-            }
+            })
+
     }
 });
 
@@ -141,11 +150,12 @@ app.controller('adminDashboard', function($scope, $http, $location, orderDetails
                     function(response){
                         console.log("Response in client side", response.data.orders);
    						orderDetails.setOrder(response.data.orders);
+
                         $location.path("/getOrderDetails");
                         //console.log("Response in $scope.orders ", $scope.orders[0] );
                         //$scope.vouchers.push(response.data);
                     }),
-                function(response){
+                function(err){
                     console.log("Dashboard loading failed");
                 }
         }
@@ -180,7 +190,7 @@ app.controller('root', function($scope, $http, userDetails, $location){
                     //console.log("Response in $scope.orders ", $scope.orders[0] );
                     //$scope.vouchers.push(response.data);
                 }),
-            function(response){
+            function(err){
                 console.log("Dashboard loading failed");
             }
     }
@@ -208,7 +218,7 @@ app.controller('root', function($scope, $http, userDetails, $location){
     // Go to Analytics page... 
 
     $scope.analytics = function () {
-       // $location.path("/adminLogin");
+        $location.path("/analyticsDetails");
     }
 
 

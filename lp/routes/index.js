@@ -114,8 +114,6 @@ router.post('/userSignup',function (req,res) {
 
        }
     });
-
-
 });
 
 
@@ -188,30 +186,27 @@ router.post('/redeemCoupon', function(req, res) {
 
 router.post('/addPoints', function(req, res) {
 
-    var Points = new Order({
-        email: req.body.email,
-        amount : req.body.amount
-    });
+   var email = req.body.email;
+   var amount = (req.body.amount);
 
-     Customer.find({"email": Points.email},function(err,doc) {
+     Customer.find({"email": email},function(err,doc) {
         if (err) { throw err; }
-        else { 
-            console.log("Document is..", doc[0]);
-            console.log("Document is..", doc[0].totalPoints);
+        else {
+            console.log("Amount is "+amount + "Type of" + typeof(amount));
+            console.log("Document is..", doc);
+            //console.log("Document is..", doc[0].totalPoints);
             var points = doc[0].totalPoints;
-            var remainingPoints = points + Points.amount;
-            console.log("Remaining Points are",remainingPoints);
+            console.log("Document ka point" +points + "Type of" + typeof(points));
+            var newPoints = points + amount;
+            console.log("New Point is",newPoints);
 
-            Customer.findOneAndUpdate({"email": Points.email}, {$set: {"totalPoints": remainingPoints}}, function(err,doc) {
+            Customer.findOneAndUpdate({"email": email}, {$set: {"totalPoints": newPoints}}, function(err,doc) {
                 if (err) { throw err; }
                 else { console.log("Document Updated"); }
             });
         }
       }); 
 });
-
-
-
 
 router.post('/addItem',function (req,res) {
     var itemData = new Items({

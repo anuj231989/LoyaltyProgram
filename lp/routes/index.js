@@ -224,15 +224,16 @@ router.post('/addPoints', function(req, res) {
         else {
             console.log("Amount is "+amount + "Type of" + typeof(amount));
             console.log("Document is..", doc);
-            //console.log("Document is..", doc[0].totalPoints);
             var points = doc[0].totalPoints;
+            var totalBill = doc[0].totalBillAmount;
             console.log("Document ka point" +points + "Type of" + typeof(points));
+            totalBill = totalBill + amount;
             var newPoints = points + amount;
             console.log("New Point is",newPoints);
 
-            Customer.findOneAndUpdate({"email": email}, {$set: {"totalPoints": newPoints}}, function(err,doc) {
+            Customer.findOneAndUpdate({"email": email}, {$set: {"totalPoints": newPoints, "totalBillAmount": totalBill}}, function(err,doc) {
                 if (err) { throw err; }
-                else { console.log("Document Updated"); }
+                else { res.send("Document Updated"); }
             });
         }
       }); 

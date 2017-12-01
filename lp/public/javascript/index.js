@@ -88,11 +88,11 @@ app.controller('analytics', function($scope, $http){
                     $scope.customerData = response.data
                     console.log($scope.customerData[0].username);
 
-                    customerDataArr.push(['username','points']);
+                    customerDataArr.push(['username','amount']);
                     for(var i=0; i < $scope.customerData.length;i++){
                         var username = $scope.customerData[i].username;
-                        var points = $scope.customerData[i].totalPoints;
-                        customerDataArr.push([username,points]);
+                        var amount = $scope.customerData[i].totalBillAmount;
+                        customerDataArr.push([username,amount]);
                     }
 
                     var data = google.visualization.arrayToDataTable(customerDataArr);
@@ -109,23 +109,6 @@ app.controller('analytics', function($scope, $http){
                     console.log("Customer Data failed");
                 }
             );
-
-
-
-
-/*        var url = "addPoints";
-        var Points = {
-            amount : $scope.amount,
-            email : $scope.email
-        };
-        $http.post(url,Points)
-            .then(
-                function(response){
-                    console.log("Points Saved");
-                }),
-            function(response){
-                console.log("Could not save Points");
-            }*/
     }
 });
 
@@ -140,9 +123,12 @@ app.controller('voucher', function($scope, $http){
         .then(
             function(response){
                 console.log("Points Saved");
+                $scope.amount = "";
+                $scope.email = "";
             }), 
             function(response){
                 console.log("Could not save Points");
+
             }
     }
 });
@@ -268,9 +254,6 @@ app.controller('root', function($scope, $http, userDetails, $location){
     $scope.goToAdminDashboard = function () {
         $location.path("/adminLogin");
     }
-
-    // Go to Analytics page... 
-
     $scope.analytics = function () {
         $location.path("/analyticsDetails");
     }
@@ -295,8 +278,6 @@ app.controller('dashboard', function($scope, $http, userDetails, $location){
                 function(response){
                     console.log("Response in client side", response.data.vouchers);
                     $scope.vouchers = response.data.vouchers;
-                    //console.log("Response in $scope.vouchers ", $scope.vouchers[0] );
-                    //$scope.vouchers.push(response.data);
 
                 }),
             function(response){

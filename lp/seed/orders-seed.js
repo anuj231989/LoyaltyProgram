@@ -8,7 +8,6 @@ console.log("Connected to MongoDb database");
 var orders = [
     new Order({
         userid: "5a192f7700482fbb01af614a",
-        items: "5a1958db16b8e0ac65fc8f89",
         orderDate: "12/01/2017",
         pointsRedeemed :100
     })

@@ -11,6 +11,7 @@ var CustomerSchema = new Schema({
 	password: {type:String, required:true},
 	email: {type:String, required:true},
     phone: {type:String, required:true},
+    totalBillAmount: {type:Number, default:0},
     totalPoints :{type:Number, default: 1000}
 });
 

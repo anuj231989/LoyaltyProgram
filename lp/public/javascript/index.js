@@ -98,7 +98,7 @@ app.controller('analytics', function($scope, $http){
                     var data = google.visualization.arrayToDataTable(customerDataArr);
 
                     var options = {
-                        title: 'My Customer Activities'
+                        title: 'My Customer Activities based on Points Redeemed'
                     };
 
                     var chart = new google.visualization.PieChart(document.getElementById('piechart'));

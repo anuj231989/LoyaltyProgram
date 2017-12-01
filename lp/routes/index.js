@@ -53,7 +53,7 @@ router.post('/referFriends',function (req,res) {
                from: "Digital Loyalty Program Emailer ✔ <loyaldigitalclub@gmail.com>",// sender address
                to: req.body.email, // list of receivers
                subject: "Referral from Your Friend", // Subject line
-               html: "<b>Welcome <br><br>Your Friend has just invited you to join the Digital Loyalty Program ☺</b><br/>" // html body
+               html: "<b>Welcome <br><br>Your Friend has just invited you to join the Digital Loyalty Program ☺</b><br/> Please click on following link to signup:<br/><br/> http://ec2-54-219-166-41.us-west-1.compute.amazonaws.com:7000/#!/signup" // html body
            }
            smtpTransport.sendMail(mailOptions, function(error, response){
                if(error){

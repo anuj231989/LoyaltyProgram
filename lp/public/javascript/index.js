@@ -74,6 +74,60 @@ app.config(function($routeProvider) {
         });
 
 });
+app.controller('analytics', function($scope, $http){
+    console.log("In Analytics Controller");
+    google.charts.setOnLoadCallback($scope.drawChart);
+
+    $scope.drawChart = function() {
+        var customerDataArr = [];
+        var url = "getCustomerData";
+        $http.get(url)
+            .then(
+                function(response){
+                    console.log("Customer Data success");
+                    $scope.customerData = response.data
+                    console.log($scope.customerData[0].username);
+
+                    customerDataArr.push(['username','points']);
+                    for(var i=0; i < $scope.customerData.length;i++){
+                        var username = $scope.customerData[i].username;
+                        var points = $scope.customerData[i].totalPoints;
+                        customerDataArr.push([username,points]);
+                    }
+
+                    var data = google.visualization.arrayToDataTable(customerDataArr);
+
+                    var options = {
+                        title: 'My Customer Activities'
+                    };
+
+                    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+                    chart.draw(data, options);
+                },
+                function(response){
+                    console.log("Customer Data failed");
+                }
+            );
+
+
+
+
+/*        var url = "addPoints";
+        var Points = {
+            amount : $scope.amount,
+            email : $scope.email
+        };
+        $http.post(url,Points)
+            .then(
+                function(response){
+                    console.log("Points Saved");
+                }),
+            function(response){
+                console.log("Could not save Points");
+            }*/
+    }
+});
 
 app.controller('voucher', function($scope, $http){
     $scope.addPoints = function() {

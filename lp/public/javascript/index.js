@@ -301,10 +301,7 @@ app.controller('dashboard', function($scope, $http, userDetails, $location){
         .then(
             function(response){
                 console.log("Data Saved");
-                
-        coupon.redeemed = true;
-      //  console.log("Response in browser is", response.data.updatedPoints);
-        $scope.totalPoints = response.data.updatedPoints;
+		coupon.redeemed = true;
             }), 
             function(response){
                 console.log("Could not save data");

@@ -184,14 +184,13 @@ router.post('/redeemCoupon', function(req, res) {
         value : req.body.value
     });
 
-    var remainingPoints = null;
      Customer.find({"_id": orderData.userid},function(err,doc) {
         if (err) { throw err; }
         else { 
             console.log("Document is..", doc[0]);
             console.log("Document is..", doc[0].totalPoints);
             var points = doc[0].totalPoints;
-            remainingPoints = points - orderData.points;
+            var remainingPoints = points - orderData.points;
             console.log("Remaining Points are",remainingPoints);
 
             Customer.findOneAndUpdate({"_id": orderData.userid}, {$set: {"totalPoints": remainingPoints}}, function(err,doc) {
@@ -208,10 +207,9 @@ router.post('/redeemCoupon', function(req, res) {
            console.log(err);
        }
        else{
-           res.json({msg: 'Order details saved successfully', updatedPoints : remainingPoints });
-          // console.log("response from server is",res.json);
-            }
-
+           res.json({msg: 'Order details saved successfully'});
+           console.log(result);
+       }
 
     });
 });
